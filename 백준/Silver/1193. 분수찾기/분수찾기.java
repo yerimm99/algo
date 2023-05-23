@@ -14,20 +14,20 @@ public class Main {
 
         while(n > 0) {
             b++;
-            n -= 1;
+            n--;
             while (b > 1 && n > 0) {
                 a++;
                 b--;
-                n-=1;
+                n--;
             }
             if(n > 0) {
                 a++;
-                n -= 1;
+                n--;
             }
             while (a > 1 && n > 0) {
                 a--;
                 b++;
-                n-=1;
+                n--;
             }
         }
             sb.append(a + "/" + b);
