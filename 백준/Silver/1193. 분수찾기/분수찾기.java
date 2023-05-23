@@ -1,0 +1,37 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Main {
+    public static void main(String[] args)throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+        int num = Integer.parseInt(br.readLine());
+        int a = 1;
+        int b = 1;
+        int n = num - 1;
+
+        while(n > 0) {
+            b++;
+            n -= 1;
+            while (b > 1 && n > 0) {
+                a++;
+                b--;
+                n-=1;
+            }
+            if(n > 0) {
+                a++;
+                n -= 1;
+            }
+            while (a > 1 && n > 0) {
+                a--;
+                b++;
+                n-=1;
+            }
+        }
+            sb.append(a + "/" + b);
+            System.out.println(sb);
+
+    }
+}
