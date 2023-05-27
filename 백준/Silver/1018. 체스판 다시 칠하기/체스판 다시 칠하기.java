@@ -1,75 +1,52 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args)throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
 
-        String NM_str = br.readLine();
-        int N = Integer.parseInt(NM_str.split(" ")[0]);
-        int M = Integer.parseInt(NM_str.split(" ")[1]);
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
 
-        String[][] arr = new String[N][M];
+		int row = Integer.parseInt(st.nextToken());
+		int col = Integer.parseInt(st.nextToken());
 
-        // 배열로 보드를 저장
-        for(int i = 0 ; i < N ; i++) {
-            String str = br.readLine();
-            for(int j = 0 ; j < M ; j++) {
-                if(str.charAt(j) == 'W') {
-                    arr[i][j] = "W";
-                }else {
-                    arr[i][j] = "B";
-                }
-            }
-        }
+		String board[] = new String[row];
 
-        int min = 64;
+		for(int i=0; i<row; i++) {
+			board[i] = br.readLine();
+		}
 
-        for(int i = 0 ; i < N - 7 ; i++) { // 세로의 경우의 수
-            for(int j = 0 ; j < M - 7 ; j++) { // 가로의 경우의 수
-                min = Math.min(min, cal(i, j, arr)); // 최소값을 저장
-            }
-        }
+		int sol = Integer.MAX_VALUE;
 
-        sb.append(min);
-        System.out.println(sb);
-    }
+		for(int i=0; i<=row - 8; i++) {
+			for(int j=0; j<=col - 8; j++) {
+				int curSol = solved(i, j, board);
 
-    public static int cal(int x, int y, String[][] WB) {
+				if(sol > curSol) {
+					sol = curSol;
+				}
+			}
+		}
 
-        int count = 0;
+		System.out.println(sol);
+	}
 
-        String color = "W"; // 첫번째 칸을 W를 기준으로 색칠
+	private static int solved(int start_row, int start_col, String[] board) {
+		String orgBoard[] = {"WBWBWBWB", "BWBWBWBW"};
+		int whiteSol = 0;
 
-        for(int i = x ; i < x + 8 ; i++) { // 시작컬럼부터 8개까지
-            for(int j = y ; j < y + 8 ; j++) { //시작컬럼부터 8개까지
+		for(int i=0; i<8; i++) {
+			int row = start_row + i;
+			for(int j=0; j<8; j++) {
+				int col = start_col + j;
 
-                // color는 정상적인 체스판이고 WB[i][j]와 비교
-                if(!WB[i][j].equals(color)) {
-                    count++;
-                }
+				if(board[row].charAt(col) != orgBoard[row % 2].charAt(j)) {
+					whiteSol++;
+				}
+			}
+		}
 
-                if(color.equals("W")) { // 컬러 변경
-                    color = "B";
-                }else {
-                    color = "W";
-                }
-            }
+		return Math.min(whiteSol, 64 - whiteSol);
+	} // End of solved
 
-            if(color.equals("W")) { // 줄이 바뀌면 바로 윗칸과 색깔이 달라야 함
-                color = "B";
-            }else {
-                color = "W";
-            }
-        }
-
-        count = Math.min(count, 64 - count);
-
-        return count;
-
-    }
-
-}
+} // End of class
